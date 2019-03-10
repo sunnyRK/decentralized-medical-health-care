@@ -5,19 +5,19 @@ import medical from '../../ethereum/medical';
 import web3 from '../../ethereum/web3';
 import { Link } from '../../routes';
 
-class Doctor extends Component{
+class Patients extends Component{
 
     static async getInitialProps(){
-        const patientAddresArray = await medical.methods.getPatientAddressArray().call();
-        return { patientAddresArray };
+        const doctoraddressArray = await medical.methods.getDoctorAddressArray().call();
+        return { doctoraddressArray };
     }
 
     renderList()
     {
-        const items = this.props.patientAddresArray.map(address => {
+        const items = this.props.doctoraddressArray.map(address => {
             return {
                 header: address,
-                description: (<Link route={`/category/${address}`}><a>View Patient Detail</a></Link>),                   
+                description: (<Link route={`/category/${address}/doctordetail`}><a>View Doctor Detail</a></Link>),                   
                 fluid: true
             };
         });
@@ -28,11 +28,11 @@ class Doctor extends Component{
         return (
             <Layout>
                 <div>
-                    <h1>Doctor's Patient list</h1>
+                <h1>Doctor List</h1>
                     {this.renderList()}
                 </div>
             </Layout>
         );
     }
 }
-export default Doctor;
+export default Patients;
