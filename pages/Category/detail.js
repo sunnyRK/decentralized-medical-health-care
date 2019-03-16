@@ -52,9 +52,7 @@ class Detail extends Component{
 
         return <Card.Group items={items}/>;
     }
-  
-  
-
+    
     render () {
         return (
             <Layout>

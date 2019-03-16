@@ -10,20 +10,21 @@ class MedicalIndex extends Component{
         return (
                 <Layout>
                     <div>
+                    <h1>Select who you are?</h1>
                     <Link route='/category/doctor'>
                         <a>
                             <Button 
-                                content="Doctor" 
+                                content="Press If You Doctor" 
                                 icon="add circle" 
                                 primary 
                             />
                         </a>
                     </Link>
-
+                    <h1>or</h1>
                     <Link route='/category/patients'>
                         <a>
                             <Button 
-                                content="Patient" 
+                                content="Press If You Patient" 
                                 icon="add circle" 
                                 primary 
                             />

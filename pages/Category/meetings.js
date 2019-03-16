@@ -24,7 +24,10 @@ class Meetings extends Component{
                   meetingID:meetingInfo[5],
                   IsDelegatedPatient: meetingInfo[6]});
         }
-        return { meetingArray };
+        return { 
+            address: props.query.address,
+            meetingArray 
+        };
     }
 
     renderMeetings(){
@@ -53,10 +56,9 @@ class Meetings extends Component{
                         <h1>Patient Meetings with Doctor</h1>
                         </Grid.Column>
                     </Grid.Row>
-                
-
+            
                     <Grid.Row>
-                        <Grid.Column width={10}>
+                        <Grid.Column width={15}>
                              {this.renderMeetings()}
                         </Grid.Column>
                     </Grid.Row>

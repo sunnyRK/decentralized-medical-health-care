@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import Layout from '../../components/Layout';
-import { Card, Grid, Button } from 'semantic-ui-react';
+import { Card, Grid, Button, Form } from 'semantic-ui-react';
 import medical from '../../ethereum/medical';
 import web3 from '../../ethereum/web3';
-import { Link } from '../../routes';
 
 class DoctorDetail extends Component{
 
     static async getInitialProps(props){
-        const patientaddress = props.query.address;
+        const doctoraddress = props.query.address;
         const accounts = await web3.eth.getAccounts();
-        console.log(accounts[0]+ " "+patientaddress);
-        const DoctorRecords = await medical.methods.getDoctorList(accounts[0],patientaddress).call();
-        console.log(DoctorRecords[3] + "record");
+        const DoctorRecords = await medical.methods.getDoctorList(doctoraddress,accounts[0]).call();
+        alert(DoctorRecords[3]);
         return {
-            patientaddress: props.query.address,
+            doctoraddress: props.query.address,
             doctorId: DoctorRecords[0],
             doctorFullName: DoctorRecords[1],
             aadharCardNumber: DoctorRecords[2],
-            IsDelegatedPatient: true
+            IsDelegatedPatient: DoctorRecords[3]
         };
     }
 
@@ -33,66 +31,91 @@ class DoctorDetail extends Component{
         const items = [
             {
                 header: doctorId,
-                meta: "Patient id of patient",
-                description: "Through patient id you can track record of health patient.",
+                meta: "Doctor id of patient",
+                description: "Through Doctor id you can track record of health Doctor.",
                 style: { overflowWrap: 'break-word' }
             },
             {
                 header: doctorFullName,
-                meta: "Patient Full name",
-                description: "This is the patient full name"
+                meta: "Doctor Full name",
+                description: "This is the Doctor full name"
             },
             {
                 header: aadharCardNumber,
                 meta: "Aadharcard Number",
-                description: "This is the Aadharcard number of patient. Which will be unique to each person."
+                description: "This is the Aadharcard number of Doctor. Which will be unique to each person."
             }
         ];
 
         return <Card.Group items={items}/>;
     }
-  
-    ButtoSet() {
-        const {
-            IsDelegatedPatient
-        } = this.props;
 
-        if (true) {
-          return (
-            <div>
-              <Button primary>Revoke</Button>
-            </div>
-          );
-        } else {
-          return (
-            <div>
-              <Button primary>Grant</Button>
-            </div>
-          );
+    onDelegate = async (event) => {
+        event.preventDefault();
+        try{
+            const accounts = await web3.eth.getAccounts();
+            await medical.methods.delegatePatient(
+                this.props.doctoraddress,1234
+            ).send({
+                from:accounts[0]
+            });
+            // Router.pushRoute(`/category/${this.props.doctoraddress}/meetings`);
+        }catch(err){
         }
-      }
-    
+    };
+
+    OnRevoke = async (event) => {
+        event.preventDefault();
+        try{
+            const accounts = await web3.eth.getAccounts();
+            await medical.methods.RevokedelegatePatient(
+                this.props.doctoraddress,1234
+            ).send({
+                from:accounts[0]
+            });
+            // Router.pushRoute(`/category/${this.props.doctoraddress}/meetings`);
+        }catch(err){
+        }
+    };
+
+    renderButton(){
+        if(this.props.IsDelegatedPatient)
+        { 
+            return (
+                <Form onSubmit={this.OnRevoke}>
+                    <Button primary>Revoke</Button>
+                </Form>
+            );
+        }
+        else 
+        {
+            return (
+                <Form onSubmit={this.onDelegate}>
+                    <Button primary>Accept</Button>
+                </Form>
+            );
+        }
+    }
 
     render () {
         return (
             <Layout>
                 <div>
                     <h1>Doctor Full Details</h1>
-                    
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={10}>
-                            {this.renderDetails()}
-                        </Grid.Column>
-                    </Grid.Row>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={10}>
+                                {this.renderDetails()}
+                            </Grid.Column>
+                        </Grid.Row>
 
-                    <Grid.Row>
-                        <Grid.Column>
-                            {this.ButtoSet()}
-                        </Grid.Column>
-                    </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                {this.renderButton()}
+                            </Grid.Column>
+                        </Grid.Row>
 
-                </Grid>
+                    </Grid>
                 </div>
             </Layout>
         );

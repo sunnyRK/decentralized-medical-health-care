@@ -14,8 +14,6 @@ contract Medical{
     
     Meeting[] public meeting;
     
-    // mapping (address => mapping(address => mapping(bytes32 => Meeting))) doctorMeetings;
-    
     struct PatientRecord {
         bytes32 patientId;
         string patientFullName;
@@ -24,7 +22,6 @@ contract Medical{
         uint passCode;
         mapping (address => bool) IsDelegatedPatient;
         bytes32[] meetingIdArray;
-        // mapping (address => mapping(bytes32 => Meeting)) doctorMeeting;
     }
     
     mapping (address => PatientRecord) public patientList;
@@ -43,6 +40,10 @@ contract Medical{
     address Owner;
     constructor () public payable {
       Owner = msg.sender;
+    }
+    
+    function PatientIsDelegate(address _doctorAddress, address _patientAddress) public view returns(bool){
+        return doctorList[_doctorAddress].IsDelegatedPatient[_patientAddress];
     }
     
     function getDoctorList(address _doctoraddress, address _patientAddress) public view returns(bytes32,string,uint,bool){
@@ -115,8 +116,8 @@ contract Medical{
     function AddNewPatient() public returns(string memory) {
         require(!patientList[msg.sender].IsPatient);
         patientList[msg.sender].IsPatient = true;
-        patientList[msg.sender].patientFullName = "sunny";
-        patientList[msg.sender].aadharCardNumber = 11222;
+        patientList[msg.sender].patientFullName = "Sunny Radadiya";
+        patientList[msg.sender].aadharCardNumber = 111100002222;
         patientList[msg.sender].passCode = 1234;
         patientList[msg.sender].patientId = bytes32(keccak256(abi.encodePacked(msg.sender,now)));
         patientaddressArray.push(msg.sender);
@@ -125,18 +126,9 @@ contract Medical{
     
    function AddNewDoctor() public returns(string memory) {
         require(!doctorList[msg.sender].IsDoctor);
-        
-        // DoctorRecord memory newDoctor = DoctorRecord({
-        //     IsDoctor:true;
-        //     doctorFullName:"doctor name",
-        //     aadharCardNumber: 222222,
-        //     doctorId: bytes32(keccak256(abi.encodePacked(msg.sender,now)))
-        // });
-        // doctorList.push(newDoctor);
-        
         doctorList[msg.sender].IsDoctor = true;
-        doctorList[msg.sender].doctorFullName = "doctor name";
-        doctorList[msg.sender].aadharCardNumber = 222222;
+        doctorList[msg.sender].doctorFullName = "Mr. Rutviz Vyas";
+        doctorList[msg.sender].aadharCardNumber = 222298981234;
         doctorList[msg.sender].doctorId = bytes32(keccak256(abi.encodePacked(msg.sender,now)));
         doctoraddressArray.push(msg.sender);
         return "New Doctor Created";
@@ -163,32 +155,21 @@ contract Medical{
     }
     
     //New Meeting
-    function AddPatientMeetingInfo(address _patientAddress) public returns(string memory){
+    function AddPatientMeetingInfo(address _patientAddress, string _diseases, uint _expense, string _medicineName) public returns(string memory){
         require(doctorList[msg.sender].IsDoctor);
         require(patientList[_patientAddress].IsDelegatedPatient[msg.sender]);
         bytes32 meetingId = bytes32(keccak256(abi.encodePacked(msg.sender,_patientAddress,now)));
-        // patientList[_patientAddress].doctorMeeting[msg.sender][meetingId].diseases = "fever";
-        // patientList[_patientAddress].doctorMeeting[msg.sender][meetingId].expense = 100;
-        // patientList[_patientAddress].doctorMeeting[msg.sender][meetingId].medicineName = "lemolate";
-        // patientList[_patientAddress].doctorMeeting[msg.sender][meetingId].IsDelegatedPatient = true;
         
         Meeting memory newMeeting = Meeting({
-            diseases: "fever",
-            expense: 100,
-            medicineName: "lemolate",
+            diseases: _diseases,
+            expense: _expense,
+            medicineName: _medicineName,
             meetingID: meetingId,
             IsDelegatedPatient: true,
             patientAddess: _patientAddress,
             doctorAddress: msg.sender
         });
         meeting.push(newMeeting);
-        
-        
-        // doctorMeetings[_patientAddress][msg.sender][meetingId].diseases = "fever";
-        // doctorMeetings[_patientAddress][msg.sender][meetingId].expense = 100;
-        // doctorMeetings[_patientAddress][msg.sender][meetingId].medicineName = "lemolate";
-        // doctorMeetings[_patientAddress][msg.sender][meetingId].IsDelegatedPatient = true;
-        
         patientList[_patientAddress].meetingIdArray.push(meetingId);
         return "Added Meeting Info";
     }
