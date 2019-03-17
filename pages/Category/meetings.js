@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../../components/Layout';
-import { Card, Grid, Button } from 'semantic-ui-react';
+import { Card, Grid, Button, Image } from 'semantic-ui-react';
 import medical from '../../ethereum/medical';
 import web3 from '../../ethereum/web3';
 import { Link } from '../../routes';
@@ -16,13 +16,17 @@ class Meetings extends Component{
         for(var i=0;i<meetingLength;i++)
         {
             const meetingInfo = await medical.methods.getMeetingInfo(i).call();
+            const _meetingIpReportHash = await medical.methods.getMeetingReportHash(i).call();
             meetingArray.push({ diseases: meetingInfo[0],
-                 medicineName: meetingInfo[1],
-                  patientAddess:meetingInfo[2],
-                  doctorAddress:meetingInfo[3],
-                  expense:meetingInfo[4],
-                  meetingID:meetingInfo[5],
-                  IsDelegatedPatient: meetingInfo[6]});
+                medicineName: meetingInfo[1],
+                patientAddess:meetingInfo[2],
+                doctorAddress:meetingInfo[3],
+                expense:meetingInfo[4],
+                meetingID:meetingInfo[5],
+                IsDelegatedPatient: meetingInfo[6],
+                meetingIpReportHash: _meetingIpReportHash
+            });
+                
         }
         return { 
             address: props.query.address,
@@ -34,12 +38,26 @@ class Meetings extends Component{
         // const items = [];
 
         const items = this.props.meetingArray.map(array => {
-            return {
-                header: array.meetingID,
-                meta: array.diseases,
-                description: "Doctor Given " + array.medicineName +" at this cost "+array.expense,
-                style: { overflowWrap: 'break-word' }
-            };
+            var imagesrc = "https://gateway.ipfs.io/ipfs/"+array.meetingIpReportHash;
+            if(array.meetingIpReportHash){
+                // alert(array.meetingIpReportHash + "  ----");
+                return {
+                    header: array.meetingID,
+                    meta: array.diseases,
+                    description: "Doctor Given " + array.medicineName +" at this cost "+array.expense,
+                    image: <Image src={imagesrc} size='small' />,
+                    style: { overflowWrap: 'break-word' }
+                };
+            }else{
+                // alert("No Hash");
+                return {
+                    header: array.meetingID,
+                    meta: array.diseases,
+                    description: "Doctor Given " + array.medicineName +" at this cost "+array.expense,
+                    style: { overflowWrap: 'break-word' }
+                };
+            }
+            
         });
         return <Card.Group items={items}/>;
 

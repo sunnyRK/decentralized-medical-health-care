@@ -29,7 +29,8 @@ class Doctor extends Component{
     renderList() {
         var counter = 0;
         const items = this.props.patientAddresArray.map(address => {
-            if(this.props.IsDelegationArray[counter++]){
+            // if(this.props.IsDelegationArray[counter++]){
+                if(true){
                 return {
                     header: address,
                     description: (<Link route={`/category/${address}`}><a>View Patient Detail</a></Link>),                   

@@ -6,6 +6,7 @@ contract Medical{
         string diseases;
         uint expense;
         string medicineName;
+        string IpReportHash;
         bytes32 meetingID;
         bool IsDelegatedPatient;
         address patientAddess;
@@ -93,7 +94,7 @@ contract Medical{
         return patientaddressArray.length;
     }
     
-    function getMeetingInfo(uint _index) public view returns(   string, string,address,address,uint,bytes32, bool){
+    function getMeetingInfo(uint _index) public view returns(string, string, address,address,uint,bytes32, bool){
         return (
             meeting[_index].diseases,
             meeting[_index].medicineName,
@@ -103,6 +104,18 @@ contract Medical{
             meeting[_index].meetingID,
             meeting[_index].IsDelegatedPatient
         );
+    }
+    
+    function getMeetingReportHash(uint index) public view returns(string){
+        return meeting[index].IpReportHash;
+    }
+    
+    function getUserIsDoctor(address _doctorAddress) public view returns(bool){
+        return doctorList[_doctorAddress].IsDoctor;
+    }
+    
+    function getUserIsPatient(address _patientAddress) public view returns(bool){
+        return patientList[_patientAddress].IsPatient;
     }
     
     function getMeetingCount() public view returns(uint){
@@ -155,7 +168,7 @@ contract Medical{
     }
     
     //New Meeting
-    function AddPatientMeetingInfo(address _patientAddress, string _diseases, uint _expense, string _medicineName) public returns(string memory){
+    function AddPatientMeetingInfo(address _patientAddress, string _diseases, uint _expense, string _medicineName, string _IpReportHash) public returns(string memory){
         require(doctorList[msg.sender].IsDoctor);
         require(patientList[_patientAddress].IsDelegatedPatient[msg.sender]);
         bytes32 meetingId = bytes32(keccak256(abi.encodePacked(msg.sender,_patientAddress,now)));
@@ -164,6 +177,7 @@ contract Medical{
             diseases: _diseases,
             expense: _expense,
             medicineName: _medicineName,
+            IpReportHash: _IpReportHash,
             meetingID: meetingId,
             IsDelegatedPatient: true,
             patientAddess: _patientAddress,
@@ -173,24 +187,4 @@ contract Medical{
         patientList[_patientAddress].meetingIdArray.push(meetingId);
         return "Added Meeting Info";
     }
-    
-    // OLD meeting update
-    // function AddPatientOldMeetingInfo(address _patientAddress, bytes32 _oldMeetingId) public returns(string memory){
-    //     require(doctorList[msg.sender].IsDoctor);
-    //     require(patientList[_patientAddress].IsDelegatedPatient[msg.sender]);
-        
-    //      Meeting memory newMeeting = Meeting({
-    //         .diseases: "fever",
-    //         expense: 100,
-    //         medicineName: "lemolate",
-    //         meetingID: meetingId
-    //     });
-    //     patientList[_patientAddress].doctorMeeting[msg.sender].push(newMeeting);
-        
-    //     // patientList[_patientAddress].doctorMeeting[msg.sender][_oldMeetingId].diseases = "fever";
-    //     // patientList[_patientAddress].doctorMeeting[msg.sender][_oldMeetingId].expense = 100;
-    //     // patientList[_patientAddress].doctorMeeting[msg.sender][_oldMeetingId].medicineName = "lemolate";
-    //     patientList[_patientAddress].meetingIdArray.push(_oldMeetingId);
-    //     return "Added Meeting Info";
-    // }
 }
