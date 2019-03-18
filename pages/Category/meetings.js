@@ -4,6 +4,7 @@ import { Card, Grid, Button, Image } from 'semantic-ui-react';
 import medical from '../../ethereum/medical';
 import web3 from '../../ethereum/web3';
 import { Link } from '../../routes';
+// var aes256 = require('aes256');
 
 class Meetings extends Component{
     static async getInitialProps(props){
@@ -17,14 +18,25 @@ class Meetings extends Component{
         {
             const meetingInfo = await medical.methods.getMeetingInfo(i).call();
             const _meetingIpReportHash = await medical.methods.getMeetingReportHash(i).call();
-            meetingArray.push({ diseases: meetingInfo[0],
+            // var key = "#1234@dance";
+            // var cipher = aes256.createCipher(key);
+            meetingArray.push({ 
+                diseases: meetingInfo[0],
                 medicineName: meetingInfo[1],
                 patientAddess:meetingInfo[2],
                 doctorAddress:meetingInfo[3],
-                expense:meetingInfo[4],
+                expense: meetingInfo[4],
                 meetingID:meetingInfo[5],
                 IsDelegatedPatient: meetingInfo[6],
                 meetingIpReportHash: _meetingIpReportHash
+                // diseases: cipher.decrypt(meetingInfo[0]),
+                // medicineName: cipher.decrypt(meetingInfo[1]),
+                // patientAddess:cipher.decrypt(meetingInfo[2]),
+                // doctorAddress:meetingInfo[3],
+                // expense: cipher.decrypt(meetingInfo[4]),
+                // meetingID:meetingInfo[5],
+                // IsDelegatedPatient: meetingInfo[6],
+                // meetingIpReportHash: cipher.decrypt(_meetingIpReportHash)
             });
                 
         }

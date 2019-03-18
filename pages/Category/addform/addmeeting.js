@@ -4,7 +4,8 @@ import { Button, Form, Input } from 'semantic-ui-react';
 import medical from '../../../ethereum/medical';
 import web3 from '../../../ethereum/web3';
 import ipfs from '../../../ethereum/ipfs';
-import { Link } from '../../../routes';
+import { Router } from '../../../routes';
+// var aes256 = require('aes256');
 
 class Addmeeting extends Component{
      static async getInitialProps(props){
@@ -74,18 +75,26 @@ class Addmeeting extends Component{
     onSubmit = async (event) => {
         event.preventDefault();
         try{
+            // var key = "#1234@dance";
+            // var cipher = aes256.createCipher(key);
             const accounts = await web3.eth.getAccounts();
+            alert(this.state.diseases);
             await medical.methods.AddPatientMeetingInfo(
                 this.props.address,
                 this.state.diseases,
                 this.state.expense,
                 this.state.medicineName,
                 this.state.ipfsHash
+                // cipher.encrypt(this.props.address),
+                // cipher.encrypt(this.state.diseases),
+                // cipher.encrypt(this.state.expense),
+                // cipher.encrypt(this.state.medicineName),
+                // cipher.encrypt(this.state.ipfsHash)
             ).send({
                 from:accounts[0]
             });
             alert("Meeting Added");
-            // Router.pushRoute(`/category/${this.props.address}/meetings`);
+            Router.pushRoute(`/category/${this.props.address}/meetings`);
         }catch(err){
         }
     };

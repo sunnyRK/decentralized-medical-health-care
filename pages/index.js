@@ -5,14 +5,13 @@ import web3 from '../ethereum/web3';
 import { Router } from '../routes';
 import Layout from '../components/Layout';
 
-
-
 class MedicalIndex extends Component{
 
     state={
         isDoctor: false,
         isPatient: false
     };
+    
     onIsDoctor = async (event) => {
         event.preventDefault();
         try{

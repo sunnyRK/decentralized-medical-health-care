@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aes256": "^1.0.4",
     "fs-extra": "^7.0.1",
     "ganache-cli": "^6.4.1",
     "ipfs-api": "^26.1.2",
