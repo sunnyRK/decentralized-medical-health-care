@@ -7,7 +7,7 @@ import { Link } from '../../routes';
 
 class Doctor extends Component{
 
-    static async getInitialProps(){
+    static async getInitialProps() {
         const accounts = await web3.eth.getAccounts();
         const doctoraddress = accounts[0];
         const patientAddresArray = await medical.methods.getPatientAddressArray().call();
@@ -29,8 +29,8 @@ class Doctor extends Component{
     renderList() {
         var counter = 0;
         const items = this.props.patientAddresArray.map(address => {
-            // if(this.props.IsDelegationArray[counter++]){
-                if(true){
+            if(this.props.IsDelegationArray[counter++]){
+                // if(true){
                 return {
                     header: address,
                     description: (<Link route={`/category/${address}`}><a>View Patient Detail</a></Link>),                   

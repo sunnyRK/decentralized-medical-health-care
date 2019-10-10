@@ -5,17 +5,19 @@ import medical from '../ethereum/medical';
 import web3 from '../ethereum/web3';
 
 class Header extends Component{
-
+    
     onAddPatient = async (event) => {
         event.preventDefault();
-        alert("")
         try{
             const accounts = await web3.eth.getAccounts();
+            // alert(accounts[0]);
             await medical.methods.AddNewPatient().send({
-                from:accounts[0]
+                from: accounts[0]
             });
+            alert("You registered as a Patient");
         }catch(err){
-            alert("You are already patient");
+            alert("You are already Patient");
+            // alert(err);
         }
     };
 
@@ -23,16 +25,16 @@ class Header extends Component{
         event.preventDefault();
         try{
             const accounts = await web3.eth.getAccounts();
+            // alert(accounts[0]);
             await medical.methods.AddNewDoctor().send({
-                from:accounts[0]
+                from: accounts[0]
             });
+            alert("You registered as a Doctor");
         }catch(err){
-            alert("You are already doctor");
+            // alert(err);
+            alert("You are already Doctor");
         }
     };
-
-
-// export default () => {
 
     render () {
         return (
@@ -40,10 +42,7 @@ class Header extends Component{
                 <Link route='/'>
                     <a className='item'>Medical Health Care</a>
                 </Link>
-
                 <Menu.Menu position="right">
-                    
-
                     <Form onSubmit={this.onAddDoctor}>
                         <Button primary style={{ marginTop : '2px', color:"#fff"}}>
                             Become Doctor
@@ -54,13 +53,6 @@ class Header extends Component{
                             Become Patient
                         </Button>
                     </Form>
-                    {/* <Link route='/'> */}
-                        {/* <a className='item'>Add Doctor</a>
-                    </Link> */}
-                    {/* <Link route='/campaigns/new'> */}
-                    
-                        {/* <a className='item'>Add Patient</a>
-                    </Link> */}
                 </Menu.Menu>
             </Menu>
         );

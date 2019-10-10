@@ -57,7 +57,7 @@ class Meetings extends Component{
                     header: array.meetingID,
                     meta: array.diseases,
                     description: "Doctor Given " + array.medicineName +" at this cost "+array.expense,
-                    image: <Image src={imagesrc} size='small' />,
+                    image: <Image src={imagesrc} style={{width:'500px'}}size='small' />,
                     style: { overflowWrap: 'break-word' }
                 };
             }else{

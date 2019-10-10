@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import { Card, Grid, Button, Form } from 'semantic-ui-react';
 import medical from '../../ethereum/medical';
 import web3 from '../../ethereum/web3';
+import { Router } from '../../routes';
 
 class DoctorDetail extends Component{
 
@@ -10,7 +11,7 @@ class DoctorDetail extends Component{
         const doctoraddress = props.query.address;
         const accounts = await web3.eth.getAccounts();
         const DoctorRecords = await medical.methods.getDoctorList(doctoraddress,accounts[0]).call();
-        alert(DoctorRecords[3]);
+        // alert(DoctorRecords[3]);
         return {
             doctoraddress: props.query.address,
             doctorId: DoctorRecords[0],
@@ -59,7 +60,9 @@ class DoctorDetail extends Component{
             ).send({
                 from:accounts[0]
             });
-            // Router.pushRoute(`/category/${this.props.doctoraddress}/meetings`);
+            alert("You have given access your data to doctor");
+            Router.pushRoute(`/category/${this.props.doctoraddress}/doctordetail`);
+            // Router.pushRoute(`/category/${this.props.doctoraddress}/doctordetail`);
         }catch(err){
         }
     };
@@ -73,6 +76,8 @@ class DoctorDetail extends Component{
             ).send({
                 from:accounts[0]
             });
+            alert("You have Revoke your access of data from doctor");
+            Router.pushRoute(`/category/${this.props.doctoraddress}/doctordetail`);
             // Router.pushRoute(`/category/${this.props.doctoraddress}/meetings`);
         }catch(err){
         }

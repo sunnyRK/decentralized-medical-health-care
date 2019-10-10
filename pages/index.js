@@ -16,14 +16,16 @@ class MedicalIndex extends Component{
         event.preventDefault();
         try{
             const accounts = await web3.eth.getAccounts();
+            // alert(accounts[0]);
             const isDoctor = await medical.methods.getUserIsDoctor(accounts[0]).call();
             if(isDoctor){
-                alert(isDoctor);
+                // alert(isDoctor);
                 Router.pushRoute(`/category/doctor`);
             }else{
                 alert("You are not Doctor");
             }
         }catch(err){
+            alert(err);
         }
     };
 
@@ -33,7 +35,7 @@ class MedicalIndex extends Component{
             const accounts = await web3.eth.getAccounts();
             const isPatient = await medical.methods.getUserIsPatient(accounts[0]).call();
             if(isPatient){
-                alert(isPatient);
+                // alert(isPatient);
                 Router.pushRoute(`/category/patients`);
             }else{
                 alert("You are not Patient");
@@ -43,12 +45,13 @@ class MedicalIndex extends Component{
     };
 
     render(){
+        
         return (
                 <Layout>
                     <div>
                     <h1>Select who you are?</h1>
-                    {/* <Link route='/category/doctor'> */}
-                        {/* <a> */}
+                    {/* <Link route='/category/doctor'> 
+                        <a>  */}
                         <Form onSubmit={this.onIsDoctor}>
                             <Button 
                                 content="Press If You Doctor" 
@@ -56,8 +59,8 @@ class MedicalIndex extends Component{
                                 primary 
                             />
                         </Form>
-                        {/* </a> */}
-                    {/* </Link> */}
+                        {/* </a>
+                     </Link>  */}
                     <h1>or</h1>
                     {/* <Link route='/category/patients'>
                         <a> */}

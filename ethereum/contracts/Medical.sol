@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.23;
 
 contract Medical{
     
@@ -39,7 +39,7 @@ contract Medical{
     mapping (address => DoctorRecord) public doctorList;
     
     address Owner;
-    constructor () public payable {
+    constructor() public payable {
       Owner = msg.sender;
     }
     
@@ -64,8 +64,6 @@ contract Medical{
         return doctoraddressArray;
     }
     
-    
-    
     function getPatientAddress(uint _index) public view returns(address){
         return patientaddressArray[_index];
     }
@@ -89,8 +87,7 @@ contract Medical{
         ); 
     }
     
-    function getPatientCount() public view returns (uint)
-    {
+    function getPatientCount() public view returns (uint) {
         return patientaddressArray.length;
     }
     
@@ -132,7 +129,7 @@ contract Medical{
         patientList[msg.sender].patientFullName = "Sunny Radadiya";
         patientList[msg.sender].aadharCardNumber = 111100002222;
         patientList[msg.sender].passCode = 1234;
-        patientList[msg.sender].patientId = bytes32(keccak256(abi.encodePacked(msg.sender,now)));
+        patientList[msg.sender].patientId = bytes32(keccak256(msg.sender,now));
         patientaddressArray.push(msg.sender);
         return "New Patient Created";
     } 
@@ -142,7 +139,7 @@ contract Medical{
         doctorList[msg.sender].IsDoctor = true;
         doctorList[msg.sender].doctorFullName = "Mr. Rutviz Vyas";
         doctorList[msg.sender].aadharCardNumber = 222298981234;
-        doctorList[msg.sender].doctorId = bytes32(keccak256(abi.encodePacked(msg.sender,now)));
+        doctorList[msg.sender].doctorId = bytes32(keccak256(msg.sender,now));
         doctoraddressArray.push(msg.sender);
         return "New Doctor Created";
     }
@@ -171,7 +168,7 @@ contract Medical{
     function AddPatientMeetingInfo(address _patientAddress, string _diseases, uint _expense, string _medicineName, string _IpReportHash) public returns(string memory){
         require(doctorList[msg.sender].IsDoctor);
         require(patientList[_patientAddress].IsDelegatedPatient[msg.sender]);
-        bytes32 meetingId = bytes32(keccak256(abi.encodePacked(msg.sender,_patientAddress,now)));
+        bytes32 meetingId = bytes32(keccak256(msg.sender,_patientAddress,now));
         
         Meeting memory newMeeting = Meeting({
             diseases: _diseases,

@@ -3,8 +3,8 @@ const Web3 = require('web3');
 const Medical = require('./build/Medical.json');
 
 const provider = new HDWalletProvider(
-    'siege bachelor blind acoustic glide butter snack avoid evil priority ready gain',
-    'https://rinkeby.infura.io/v3/0546d521cf50424a8a252691171e5182'
+    'mesh almost stairs envelope earth plastic interest hat stock camera panda boat', 
+    'https://rinkeby.infura.io/v3/37bd907f93a146679960d54e729cd51a',
 );
 
 const web3 = new Web3(provider);
