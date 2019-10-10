@@ -16,3 +16,6 @@ If Patient wants then he/she can revoke grant from doctor of patientId. then aft
 
 # Tech-Stack
   Ethereum | Solidity | Web3.JS | IPFS | Next.JS | Rinkeby TestNet
+
+# LICENCE
+**Creative Commons license Attribution-NonCommercial-ShareAlike 4.0 International.**
