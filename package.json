@@ -15,7 +15,7 @@
     "ganache-cli": "^6.4.1",
     "ipfs-api": "^26.1.2",
     "mocha": "^6.0.2",
-    "next": "^4.1.4",
+    "next": "^11.1.0",
     "next-routes": "^1.4.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
